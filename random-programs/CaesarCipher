@@ -4,6 +4,7 @@
 // translate the string back into plain english. 
 //Another possible usage is to identify hidden items in roguelike games. Certain items, like unidentified scrolls, have their names replaced by a jumble string. The Decrypt
 // Method could be attempted for each key(1-26) to decode the text and Identify the item without having to spend an in game resource like a "Scroll of Identify".
+//https://nethackwiki.com/wiki/Scroll_origins
 
 using System;
 
