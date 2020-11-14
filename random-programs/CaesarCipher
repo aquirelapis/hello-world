@@ -1,0 +1,107 @@
+//I've made two methods in this prgram that use the Casesar Cipher to distort and repair strings.
+//https://en.wikipedia.org/wiki/Caesar_cipher
+//One user can run the Encrypt Method to encode their message. The message is then sent to a second user, who knows the number key to decode it, who runs the Decrypt Method to
+// translate the string back into plain english. 
+//Another possible usage is to identify hidden items in roguelike games. Certain items, like unidentified scrolls, have their names replaced by a jumble string. The Decrypt
+// Method could be attempted for each key(1-26) to decode the text and Identify the item without having to spend an in game resource like a "Scroll of Identify".
+
+using System;
+
+namespace CaesarCipher
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      //Takes the user input and saves it to a variable.
+      Console.Write("Enter your secret message: ");
+      string message = Console.ReadLine();
+      //calls the method Encrypt(string, int).
+      Encrypt(message, 3);
+
+      //takes the users scrambled word and unscrambles it before printing to the console.
+      Console.Write("Enter your encrypted message to have it decoded: ");
+      string decode = Console.ReadLine();
+
+      //calls the method Decrypt(string, int).
+      Decrypt(decode, 3);
+    }
+
+    //method loop for encrypt(string, int).
+    static void Encrypt(string words, int key)
+    {
+      //char array that stores the alphabet
+      char[] alphabet = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+      //converts the string used to call Encrypt(string, int) into an array made up of the words individual characters.
+      char[] secretMessage = words.ToCharArray();
+      //creates a blank character array with the same length as the secretMessage array.
+      char[] encryptedMessage = new char[secretMessage.Length];
+      //for loop that fills the encryptedMessage array with characters based on the secretMessage array + key.
+      for (int i = 0; i < secretMessage.Length; i++)
+      {
+        //turns the current character held by secretChar into a lowercase letter.
+        char secretChar = Char.ToLower(secretMessage[i]);
+        //runs the if code block if the character currently held by secretChar is a letter, but executes the else block if the character is a special symbol.
+        if (Char.IsLetter(secretChar))
+        {
+          //find the character secretChar in the alphabet array and stores its position in letterPosition.
+          int letterPosition = Array.IndexOf(alphabet, secretChar);
+          //alters the position stored in letterPosition by adding the int key that was given by the user when the method was called. The %(medulo) overflows the value if it goes over the length of the alphabet array.
+          letterPosition = (letterPosition + key) % 26;
+          //stores the character held in the altered letter position.
+          char secretLetter = alphabet[letterPosition];
+          //saves the character secretLetter to the current iteration(i) position of the array encryptedMessage.
+          encryptedMessage[i] = secretLetter;
+        }
+        else 
+        {
+          //saves the character held in secretChar to the (i) position of the encryptedMessage array. The else block is called when a character not found in the alphabet array is held in secretChar.
+          encryptedMessage[i] = secretChar;
+        }
+      }
+      //concatenates the characters of the encryptedMessage array into the newMessage string.
+      string newMessage = String.Join("", encryptedMessage);
+      //prints the newMessage string to the console.
+      Console.WriteLine(newMessage);
+    }
+
+    //method loop for decrypt(string, int).
+    static void Decrypt(string words, int key)
+    {
+      //character array that stores the alphabet.
+      char[] alphabet = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+      //turns the words string into the character array secretMessage.
+      char[] secretMessage = words.ToCharArray();
+      //creates a blank character array with the same length as the secretMessage array.
+      char[] encryptedMessage = new char[secretMessage.Length];
+      //this for loop fills the blank encryptedMessage array with characters based on the secretMessage array that are shifted backwards a number of positions based on the int key used when declaring the method.
+      for (int i = 0; i < secretMessage.Length; i++)
+      {
+        //takes a character from the secretMessage array on the iterators(i) position.
+        char secretChar = Char.ToLower(secretMessage[i]);
+        //if the current character held by secretChar matches one held by the alphabet array the first code block runs. If secretChar does not match it is probably a special symbol and the else block is run instead.
+        if (Char.IsLetter(secretChar))
+        {
+          //find the index of the character held by secretChar in the alphabet array.
+          int letterPosition = Array.IndexOf(alphabet, secretChar);
+          //alters the position stored in letterPosition by shfting it a number of times backwards equal to the key int. Math.Abs returns the absolute value of letterPosition - key to stop errors based on negative numbers applied to an arrays index. The %(medulo) 26 effectively wraps the number around to the start of the array's index if it goes over the nuber of positions in the alphabet array.
+          letterPosition = Math.Abs(letterPosition - key) % 26;
+          //saves the character found in the letterPosition position of alphabet.
+          char secretLetter = alphabet[letterPosition];
+          //stores the character currently held by secretLetter in the (i) position of the encryptedMessage array.
+          encryptedMessage[i] = secretLetter;
+        }
+        else
+        {
+          //stores the charracter currently held by secretChar in the encryptedMessage array. This code block is triggered by symbols not present in the alphabet array. This is executed most often for special characters like ? > % !.
+          encryptedMessage[i] = secretChar;
+        }
+      }
+      //concatenates the characters in the encryptedMessage array into the newMessage string.
+      string newMessage = String.Join("", encryptedMessage);
+      //prints the newMessage string to the console.
+      Console.WriteLine(newMessage);
+    }
+
+  }
+}
