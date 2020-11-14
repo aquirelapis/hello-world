@@ -1,4 +1,4 @@
-//I've made two methods in this prgram that use the Casesar Cipher to distort and repair strings.
+//I've made two methods in this program that use the Casesar Cipher to distort and repair strings.
 //https://en.wikipedia.org/wiki/Caesar_cipher
 //One user can run the Encrypt Method to encode their message. The message is then sent to a second user, who knows the number key to decode it, who runs the Decrypt Method to
 // translate the string back into plain english. 
