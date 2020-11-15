@@ -1,0 +1,76 @@
+//Ah, the best kind of quiz. Flip a coin to a witch or something. 50% chance of success even if you 100% didn't study. :)
+//This program issues a true or false quiz to the user. Their score is printed in the end.
+
+using System;
+
+namespace TrueOrFalse
+{
+  class Program
+  {
+		static void Main(string[] args)
+    {
+      // Do not edit these lines
+      Console.WriteLine("Welcome to 'True or False?'\nPress Enter to begin:");
+      string entry = Console.ReadLine();
+      Tools.SetUpInputStream(entry);
+
+      //The questions string array stores the questions that will be used in the true or false quiz.
+      string[] questions = new string[] {"Tomatos are a fruit.", "Cucumbers a vegetable.", "Poppy is a type of flower."};
+      //The answers bool array holds the correct answers for the questions in the same order as the questions being asked.
+      bool[] answers = new bool[] {true, true, true};
+      //the responses bool array will be used to store the user answers for each question.
+      bool[] responses = new bool[answers.Length];
+      //If the length of the questions and answers arrays is not equal this code block will print a warning to the console.
+      if (questions.Length != answers.Length)
+      {
+        Console.WriteLine("WARNING: The questions array is not equal to the answers array!");
+      }
+      //the askingIndex integer will be used to find the values stored in the index of the responses array.
+      int askingIndex = 0;
+      //each loop of the code block uses one of the values in the questions array in sequential order. The value is stored in the iteration variable question.
+      foreach (string question in questions)
+      {
+        //declares empty variables to store the user input.
+        string input;
+        bool isBool;
+        bool inputBool;
+        //prints the current question variable to the console. Asks the user to input a true or false value.
+        Console.WriteLine(question);
+        Console.WriteLine("True or False?");
+        input = Console.ReadLine();
+        //converts the users string entry into a boolean value.
+        isBool = Boolean.TryParse(input, out inputBool);
+        //When the user's input is not able to be parsed into a true or false value the code block inside of this while loop runs. It prompts the user to enter a true or false value and attempts to parse until the result of isBool is true.
+        while (isBool != true)
+        {
+          Console.WriteLine("Please respond with 'true' or 'false'.");
+          input = Console.ReadLine();
+          isBool = Boolean.TryParse(input, out inputBool);
+        }
+        //saves the bool from inputBool in the responses array based on the current askingIndex. Increments the asking index by 1 to move onto the next question.
+        responses[askingIndex] = inputBool;
+        askingIndex++;
+      }
+      //The scoringIndex integer will be used to look at the values saved in the responses array. The score integer will be incremented to give the user his total of correctly answered questions.
+      int scoringIndex = 0;
+      int score = 0;
+      //this foreach loop runs the code block for each of the answers stored in the answers array.
+      foreach (bool answer in answers)
+      {
+        //playerAnswer does something I swear...
+        bool playerAnswer = responses[scoringIndex];
+        //Prints the current question number, the user's answer, and the correct answer for the given question.
+        Console.WriteLine($"{scoringIndex + 1}. Input: {responses[scoringIndex]} | Answer: {answer}");
+        //if the response given by the user matches the correct answer score will be incremented by 1.
+        if (responses[scoringIndex] == answer)
+        {
+          score++;
+        }
+        //scoringIndex is incremented by one to move to the next response when the code block loops.
+        scoringIndex++;
+      }
+      //Prints teh user's score versus the maximum score to the console.
+      Console.WriteLine($"You got {score} out of 3 correct!");
+    }
+  }
+}
